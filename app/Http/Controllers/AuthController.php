@@ -34,9 +34,13 @@ class AuthController extends Controller
     /**
      * Remove token
      */
-    public function logout(): void
+    public function logout(): object
     {
         $request = app(Request::class);
         $request->user()->currentAccessToken()->delete();
+
+        return response()->json([
+            'message' => 'Logout succed'
+        ]);
     }
 }

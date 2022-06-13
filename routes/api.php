@@ -18,9 +18,10 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-Route::post('/login', [App\Http\Controllers\AuthController::class, 'authenticate'])->name('login');
-Route::post('/logout', [App\Http\Controllers\AuthController::class, 'logout'])->name('logout')->middleware(['auth:sanctum']);
-Route::post('/test', [App\Http\Controllers\AuthController::class, 'test'])->name('test')->middleware(['auth:sanctum']);
+Route::prefix('auth')->name('auth.')->group(function() {
+    Route::post('/login', [App\Http\Controllers\AuthController::class, 'authenticate'])->name('login');
+    Route::post('/logout', [App\Http\Controllers\AuthController::class, 'logout'])->name('logout')->middleware(['auth:sanctum']);
+});
 
 Route::prefix('trip')->name('trip.')->middleware('auth:sanctum')->group(function() {
     Route::get('/list', [App\Http\Controllers\TripController::class, 'list'])->name('list');
