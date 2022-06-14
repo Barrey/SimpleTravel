@@ -63,7 +63,7 @@ class TripController extends Controller
             $message = ['message' => 'Data trip saved'];
         }
 
-        return response()->json($message, HttpResponse::HTTP_ACCEPTED);
+        return response()->json($message, HttpResponse::HTTP_OK);
 
     }
     
@@ -151,7 +151,7 @@ class TripController extends Controller
     public function get($id): object
     {
         $user_id = Auth::user()->id;
-        $userTrip = UserTrip::where('id', $id)->where('user_id', $user_id)->first();
+        $userTrip = UserTrip::where('id', $id)->where('user_id', $user_id)->with('cityOrigin', 'cityDeparture', 'tripType')->first();
         $message = ['message' => 'Your Data trip not found'];
 
         if (!is_null($userTrip)) {
@@ -164,7 +164,7 @@ class TripController extends Controller
     public function list(): object
     {
         $user_id = Auth::user()->id;
-        $userTrip = UserTrip::where('user_id', $user_id)->get();
+        $userTrip = UserTrip::where('user_id', $user_id)->with('cityOrigin', 'cityDeparture', 'tripType')->get();
         $message = ['message' => 'Your Data trip not found'];
 
         if (!is_null($userTrip)) {
